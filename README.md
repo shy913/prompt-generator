@@ -1,0 +1,2 @@
+# prompt-generator
+generate prompt
