@@ -35,3 +35,6 @@ env/
 # Project specific
 *.log
 *.sqlite3
+
+push_to_github.py
+push_to_github.bat

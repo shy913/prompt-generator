@@ -7,7 +7,7 @@ translations = {
         "subtitle": "Configure your AI prompt by selecting the options below:",
         "task_input": "Enter your task for the AI:",
         "options_header": "Prompt Options",
-        "generate_button": "Generate Prompt",
+        "generate_button": "->",
         "copy_button": "Copy Prompt to Clipboard",
         "copied_message": "Prompt copied to clipboard!",
         "prompt_header": "Generated Prompt",
@@ -36,12 +36,12 @@ translations = {
         "not_specified": "Not specified",
         "ui_language": "UI Language"
     },
-    "chinese": {
+    "中文": {
         "title": "AI 提示生成器",
         "subtitle": "通过选择以下选项配置您的 AI 提示：",
         "task_input": "输入您给 AI 的任务：",
         "options_header": "提示选项",
-        "generate_button": "生成提示",
+        "generate_button": "->",
         "copy_button": "复制提示到剪贴板",
         "copied_message": "提示已复制到剪贴板！",
         "prompt_header": "生成的提示",
@@ -221,6 +221,22 @@ def main():
             padding: 0.25rem 1rem !important;
             font-size: 0.8rem !important;
         }
+        /* Align generate button with text area */
+        .generate-button-container {
+            display: flex;
+            align-items: flex-end;
+            height: 100%;
+            padding-top: 1.5rem;
+        }
+        .generate-button-container .stButton {
+            width: 100%;
+        }
+        .generate-button-container .stButton button {
+            width: 100%;
+            height: 3rem !important;
+            font-size: 1.2rem !important;
+            font-weight: bold !important;
+        }
         /* Make select boxes smaller */
         div.stSelectbox > div {
             padding-top: 0.25rem !important;
@@ -275,7 +291,7 @@ def main():
         with col2:
             ui_lang = st.selectbox(
                 t["ui_language"],
-                options=["english", "chinese"],
+                options=["english", "中文"],
                 index=0 if st.session_state.ui_language == "english" else 1,
                 key="ui_lang_selector",
                 label_visibility="collapsed"
@@ -289,11 +305,15 @@ def main():
     col_task, col_options = st.columns([1, 1])
 
     with col_task:
-        # Task input in the left column
-        task = st.text_area(t["task_input"], height=80)
-
-        # Generate button below task input
-        generate_button = st.button(t["generate_button"], use_container_width=True)
+        task_span, generate_span = st.columns([4, 1])
+        with task_span:
+            # Task input in the left column
+            task = st.text_area(t["task_input"])
+        with generate_span:
+            # Generate button below task input with custom styling
+            st.markdown('<div class="generate-button-container">', unsafe_allow_html=True)
+            generate_button = st.button(t["generate_button"])
+            st.markdown('</div>', unsafe_allow_html=True)
 
         # Display the generated prompt if available
         if st.session_state.prompt_generated:
